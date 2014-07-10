@@ -1,0 +1,118 @@
+' Gambas class file
+
+Export
+
+Inherits TextBox
+
+'******************************************************************************************************
+'Instancias Privadas
+'******************************************************************************************************
+Private MyMsj As New PopuMsj ''instancia de la clase que muestra mensajes
+
+'******************************************************************************************************
+'Constantes especiales para Controles
+'******************************************************************************************************
+Public Const _Group As String = "Osuna" ''para que se muestre en esta solapa de herramientas
+Public Const _DrawWith As String = "TextBox" ''para que se dibuje como un textbox
+
+'******************************************************************************************************
+'Propiedades
+'******************************************************************************************************
+
+'' ## Descripcion ##
+'' 
+'' Determina si el texto se muestra mas claro antes de que 
+'' el control tome el foco por primera vez
+Property TextInfo As Boolean
+Private bTextInfo As Boolean
+
+'' ## Descripcion ##
+'' 
+'' Determina si al recibir el foco se selecciona todo el texto
+Property AutoSelec As Boolean
+Private bAutoSelec As Boolean
+
+'' ## Descripcion ##
+'' 
+'' Determina si se muestra un mensaje emergente al alcanzar el maximo de caracteres permitidos
+Property PopupMaxLength As Boolean
+Private bPopupMaxLength As Boolean
+
+''y estas son las propiedades que deben mostrarse en el cuadro de dialogo 
+''de propiedades en el ide, el asterisco inicial indica que se deben de 
+''agregar a las ya existente por la herencia
+Public Const _Properties As String = "*,TextInfo,AutoSelec,PopupMaxLength"
+
+'******************************************************************************************************
+'Codigo publico
+'******************************************************************************************************
+Public Sub _new()
+'------------------------Se mira 
+    Dim oChusma As Observer
+    oChusma = New Observer(Me) As "TBox" 
+    
+End Sub
+
+Public Sub TBox_Change()
+  
+  If bPopupMaxLength Then
+    If Len(Me.Text) = Me.MaxLength Then
+      MyMsj.PopouMsj(Subst("Solo se permiten &1 caracteres", Me.Length), Me)
+    Endif
+  Endif
+  
+End
+
+
+Public Sub TBox_GotFocus()
+
+  '------------------------Si la propiedad TextInfo esta en true
+  If bTextInfo Then Me.Foreground = MMain._iBackground
+  '------------------------Si auto selec esta astivado
+  If bAutoSelec Then
+    Me.Select(0, Len(Me.Text)) ''selecciona todo el texto
+  Endif
+  
+End
+
+'******************************************************************************************************
+'Codigo manejo de propiedades
+'******************************************************************************************************
+
+Private Function TextInfo_Read() As Boolean
+
+  Return bTextInfo
+
+End
+
+Private Sub TextInfo_Write(Value As Boolean)
+
+  bTextInfo = Value
+'------------------------Si la Propiedad TextInfo esta en true
+  If bTextInfo Then Me.Foreground = MMain._TextColorInfo
+  
+End
+
+Private Function AutoSelec_Read() As Boolean
+
+  Return bAutoSelec  
+
+End
+
+Private Sub AutoSelec_Write(Value As Boolean)
+
+  bAutoSelec = Value
+
+End
+
+Private Function PopupMaxLength_Read() As Boolean
+
+  Return bPopupMaxLength
+
+End
+
+Private Sub PopupMaxLength_Write(Value As Boolean)
+
+  bPopupMaxLength = Value
+
+End

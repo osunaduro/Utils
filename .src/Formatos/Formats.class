@@ -1,0 +1,20 @@
+' Gambas class file
+
+Export
+
+Create Static
+
+Public Const TEXTNORMAL As String = "" ''Texto Normal
+Public Const M2 As String = "m2" ''Metros cuadrados
+Public Const M3 As String = "m3" ''Metros cubicos
+Public Const LTS As String = "lts" 'Litros
+Public Const KG As String = "kg" ''Kilogramos
+Public Const UNIDADES As String = "Unid" '' Unidades
+Public Const BOLSAS As String = "Bolsas" ''Bolsas
+Public Const ML As String = "ml" ''Metros Liniales
+Public Const KM As String = "km" ''Kilometros
+Public Const KWATS As String = "kw"
+Public Const BARRAS As String = "Barras"
+Public Const HORAS As String = "Hrs"
+Public Const PESOS As String = "$"
+

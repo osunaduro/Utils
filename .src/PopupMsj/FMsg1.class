@@ -1,0 +1,91 @@
+' Gambas class file
+
+Private iOpacocidad As Integer = 0
+
+'' ## Descripcion ##
+'' 
+'' propiedad que indica cuanto tienpo debe mostrarse el mensaje
+'' en este caso cuanto tiempo transcurra hasta que el form del
+'' mensaje o sea este se cierra
+Property TimeShow As Integer
+
+'' ## Descripcion ##
+'' 
+'' Esta ptopiedad es para contener el mensaje que se quiere mostrar
+Property Mensaje As String
+
+Property MensajeColor As Integer
+
+Public Sub Run() As Boolean
+  
+  Return Not Me.ShowModal()
+  
+End
+
+Public Sub Timer1_Timer()
+  
+  Desaparecer.Enabled = True
+  
+End
+
+Private Function TimeShow_Read() As Integer
+  
+  Return Timer1.Delay 
+  
+End
+
+Private Sub TimeShow_Write(Value As Integer)
+  
+  Timer1.Delay = Value
+  
+End
+
+Private Function Mensaje_Read() As String
+  
+  Return TextLabel1.Text
+  
+End
+
+Private Sub Mensaje_Write(Value As String)
+  
+  TextLabel1.Text = Value
+  
+End
+
+Public Sub Form_Open()
+  
+  Me.Opacity = 0
+  Aparecer.Enabled = True
+  
+End
+
+Private Function MensajeColor_Read() As Integer
+  
+  Return TextLabel1.Background
+  
+End
+
+Private Sub MensajeColor_Write(Value As Integer)
+  
+  TextLabel1.Background = Value
+  
+End
+
+Public Sub Desaparecer_Timer()
+  
+  iOpacocidad -= 5
+  Me.Opacity = iOpacocidad
+  If iOpacocidad = 0 Then Me.Close
+  
+End
+
+Public Sub Aparecer_Timer()
+  
+  iOpacocidad += 5
+  Me.Opacity = iOpacocidad
+  If iOpacocidad = 100 Then
+    Timer1.Enabled = True
+    Aparecer.Enabled = False
+  Endif
+  
+End

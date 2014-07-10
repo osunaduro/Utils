@@ -1,0 +1,94 @@
+' Gambas class file
+
+Export
+
+'******************************************************************************************************
+'Privado
+'******************************************************************************************************
+Private frmMsj As FMsg1 ''intancia del formulario del mensaje de error
+
+'******************************************************************************************************
+'Publico
+'******************************************************************************************************
+Public _ErrorColor As Integer = Color.Red ''Color para marcar error
+Public _InfoColor As Integer = Color.Green ''Color para marcar Informacion
+Public _WarningColor As Integer = Color.Yellow ''Color para marcar Cuidado Precucion
+Public _CustomColor As Integer = Color.Background ''Color de fondo por defecto
+Public _iBackground As Integer = Color.Default ''Color por defecto
+
+'******************************************************************************************************
+'Propiedades
+'******************************************************************************************************
+
+Property TimeVisible As Integer
+Private iTimeVisible As Integer
+
+' Property TextoMsj As String
+' Private sTextoMsj As String
+' 
+' Property {Objeto} As Object
+' Private oObjeto As Object
+
+'******************************************************************************************************
+'Codigo publico
+'******************************************************************************************************
+
+'' ## Descripcion ##
+'' 
+'' Muestra un formulario en color rojo indicando error
+'' 
+'' ## Parametros ##
+'' 
+'' - sText As String: Texto que se mostrara.
+''    
+'' - oObj As Object: Objeto sobre el cual se aplicara el mensaje.
+'' 
+Public Sub PopouMsj(sText As String, oObj As Object, Optional TipeColor As Integer = _ErrorColor) 
+  
+  frmMsj = New FMsg1
+  frmMsj.Mensaje = sText
+  frmMsj.TimeShow = iTimeVisible
+  frmMsj.MensajeColor = TipeColor
+  frmMsj.ShowPopup(oObj.ScreenX, oObj.ScreenY + oObj.h)
+  
+End
+
+'******************************************************************************************************
+'Codigo manejo de propiedades
+'******************************************************************************************************
+
+Private Function TimeVisible_Read() As Integer
+
+  Return iTimeVisible
+
+End
+
+Private Sub TimeVisible_Write(Value As Integer)
+
+  iTimeVisible = Value
+
+End
+
+' Private Function TextoMsj_Read() As String
+' 
+'   Return sTextoMsj
+' 
+' End
+' 
+' Private Sub TextoMsj_Write(Value As String)
+' 
+'   sTextoMsj = Value
+' 
+' End
+' 
+' Private Function Objeto_Read() As Object
+' 
+' Return oObjeto  
+' 
+' End
+' 
+' Private Sub Objeto_Write(Value As Object)
+' 
+'   oObjeto = Value
+' 
+' End
