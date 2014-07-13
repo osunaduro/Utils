@@ -1,0 +1,13 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,83,64)
+  { Grilla1 Grilla
+    MoveScaled(1,4,78,37)
+    Header = GridView.Horizontal
+  }
+  { Button1 Button
+    MoveScaled(19,48,16,4)
+    Text = ("Button1")
+  }
+}

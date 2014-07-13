@@ -1,0 +1,225 @@
+' Gambas class file
+
+Export
+
+Property Read X, {Left} As Integer
+Property Width, W As Integer
+Property Text, Title As String
+Property Resizable As Boolean
+Property Expand As Boolean
+Property Alignment As Integer
+Property Background As Integer
+
+'' ## Descripcion ##
+'' 
+'' Tipo de Abreviatura que lleva el valor en la celda
+'' 
+'' La cadena debe ser una representacion de un valor o devuelve error
+'' 
+'' ## Ejemplo ##
+'' 
+'' Valor string "12.33" con formato Barras = "12.33 Barras"
+Property Formato As String 
+Private iFormato As String = ""
+
+'' ## Descripcion ##
+'' 
+'' Indica si el simbolo se antepondra al texto.
+Property AnteponerSimbol As Boolean
+Private bAnteponerSimbol As Boolean
+
+Event _Refresh
+
+Public _X As Integer
+Public _W As Integer
+Public _Column As Integer
+
+Private $W As Integer
+Private $sText As String
+Private $bResizable As Boolean = True
+Private $bExpand As Boolean
+Private $iAlign As Integer
+Private $iBackground As Integer = Color.Default
+
+'' ## Descripcion ##
+'' 
+'' Suma las celdas de una coluna
+'' 
+'' ## Parametros ##
+'' 
+'' - iCol As Integer
+'' 
+''    Numero de la columna a sumar
+''    
+'' - Optional iInicio As Integer = 0
+'' 
+''    Indica desde donde se debe empesar a sumar
+''  
+'' - Optional iFin As Integer = 0
+'' 
+''    Indica hasta donde se debe sumar
+''    
+'' ## Retorno ##
+'' 
+'' - As Float
+'' 
+''    La suma de todas las celdas de la columna
+''    
+'' ## Error ##
+'' 
+''    Cuando una celda que es un string no representa un numero realmente
+''    
+'' ## Ejemplo ##
+'' 
+'' Print Util.Grilla1.Suma(1, 4, 10) Esto sumaria de la columna 1 desde la celda 5 hasta la 11 ya que se comienza a contar desde el 0
+'' 
+Public Function Suma(Optional iInicio As Integer = 0, Optional iFin As Integer = 0) As Float
+  
+  Return GetView()._Suma(_Column, iInicio, iFin)
+  
+End
+
+Private Function Formato_Read() As String
+
+    Return iFormato
+
+End
+
+Private Sub Formato_Write(Value As String)
+
+  iFormato = Value
+
+End
+
+Private Sub GetView() As Grilla
+  
+  Return Object.Parent(Object.Parent(Me))
+  
+End
+
+Public Sub _new()
+  
+  $W = Desktop.Scale * 8
+  
+End
+
+Private Function Width_Read() As Integer
+
+  Return Max(_W, $W)
+
+End
+
+Public Sub _GetExplicitWidth() As Integer
+  
+  Return $W
+  
+End
+
+
+Private Sub Width_Write(Value As Integer)
+  
+  Dim bCancel As Boolean
+  
+  If Value < 0 Then
+    bCancel = GetView()._RaiseColumnSize(_Column)
+    If Not bCancel Then Return
+    Value = GetView()._GetPreferredWidth(_Column)
+  Endif
+  
+  If Value < 0 Or If Value > 1024 Or If Value = $W Then Return
+  $W = Max(0, Value)
+  Raise _Refresh
+  GetView()._RaiseColumnResize(_Column)
+
+End
+
+Private Function Text_Read() As String
+
+  Return $sText
+
+End
+
+Private Sub Text_Write(Value As String)
+
+  $sText = Value
+  $W = Max($W, GetView().Font.TextWidth($sText) + 8 + If(GetView().Sorted, 16, 0))
+  Raise _Refresh
+
+End
+
+Private Function X_Read() As Integer
+
+  Return _X
+
+End
+
+Private Function Resizable_Read() As Boolean
+
+  Return $bResizable
+
+End
+
+Private Sub Resizable_Write(Value As Boolean)
+
+  $bResizable = Value
+
+End
+
+Private Function Expand_Read() As Boolean
+
+  Return $bExpand
+
+End
+
+Private Sub Expand_Write(Value As Boolean)
+
+  $bExpand = Value
+  Raise _Refresh
+
+End
+
+Private Function Alignment_Read() As Integer
+
+  Return $iAlign
+
+End
+
+Private Sub Alignment_Write(Value As Integer)
+
+  Select Case Value
+    Case Align.Left, Align.Right, Align.Normal, Align.Center
+    Default
+      Return
+  End Select
+
+  If $iAlign = Value Then Return
+  $iAlign = Value
+  GetView().Refresh
+
+End
+
+Private Function Background_Read() As Integer
+
+  Return $iBackground
+
+End
+
+Private Sub Background_Write(Value As Integer)
+
+  If $iBackground = Value Then Return
+  $iBackground = Value
+  GetView().Refresh
+
+End
+
+Private Function AnteponerSimbol_Read() As Boolean
+
+  Return bAnteponerSimbol  
+
+End
+
+Private Sub AnteponerSimbol_Write(Value As Boolean)
+
+  bAnteponerSimbol = Value
+
+End

@@ -1,0 +1,3 @@
+' Gambas module file
+
+Public Const _Err As String = "#ERROR#"

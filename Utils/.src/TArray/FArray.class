@@ -1,0 +1,162 @@
+' Gambas class file
+
+Private bFlagEdit As Boolean
+Private iIndex As Integer
+
+'******************************************************************************************************
+'Propiedades
+'******************************************************************************************************
+
+'' ## Descripcion ##
+'' 
+'' DEvuelve un array de string con todo los elementos
+'' contenidos ene l list box
+Property Read Lista As String[]
+
+'' ## Descripcion ##
+'' 
+'' la cantidad de itemns agregados
+Property Read Count As Integer
+
+'' ## Descripcion ##
+'' 
+'' Texto superior o caption del control
+Property TextLabelSuperior As String
+
+'' ## Descripcion ##
+'' 
+'' el tecto que aparece en el cuadro de texto antes de tomar el foco
+Property TextoInicialTBox As String
+
+'******************************************************************************************************
+'Codigo privado
+'******************************************************************************************************
+
+'------------------------control de las acciones de los botones
+Public Sub Action_Activate(sCod As String) As Boolean
+  
+  Select sCod
+    Case "Agregar"
+      Agregar()
+    Case "Borrar"
+      Borrar()
+    Case "Editar"
+      Editar()
+  End Select
+  
+End
+
+Public Sub TBox1_KeyPress()
+  
+  If Key.Code = Key.Enter Or If Key.Code = Key.Return Then Action_Activate("Agregar")
+  
+End
+
+'******************************************************************************************************
+'Codigo Privado
+'******************************************************************************************************
+Private Sub Editar()
+  
+  '------------------------pone la bandfera de editado a true
+  bFlagEdit = True
+  '------------------------si jay un texto seleccionado
+  If ListBox1.Text Then
+    '------------------------guarda el numero de indice
+    iIndex = ListBox1.Index
+    '------------------------pone el texto en el TBox
+    TBox1.Text = ListBox1.Text
+    '------------------------y bloquea el listvox
+    ListBox1.Enabled = False
+  Endif
+  
+  TBox1.SetFocus
+  
+End
+
+Private Sub Agregar()
+  '------------------------si se esta editando un itemn
+  If bFlagEdit Then
+    '------------------------actova el listbox
+    ListBox1.Enabled = True
+    '------------------------borra el itemn
+    ListBox1.Remove(iIndex)
+    '------------------------lo vuelve a cargar editado
+    ListBox1.Add(TBox1.Text, iIndex)
+    '------------------------borra el tecto del TBox
+    TBox1.Text = ""    
+    '------------------------y pone la vandera de edicion a false
+    bFlagEdit = False
+  Else
+    '------------------------si no se esta editando 
+    'y si se esta agregando un nuevo itemns
+     If TBox1.Text Then
+       '------------------------si hay texto en el TBox lo guarda
+        ListBox1.Add(TBox1.Text)
+        '------------------------y borra el TBox
+        TBox1.Text = ""
+     Endif
+  Endif
+  
+  TBox1.SetFocus
+  
+End
+
+Private Sub Borrar()
+  '------------------------si hay uno seleccionado en el listbox
+  'lo borra directamente
+  If ListBox1.Text Then
+    ListBox1.Remove(ListBox1.Index)  
+  Endif
+  
+  TBox1.SetFocus
+  
+End
+
+'******************************************************************************************************
+'Codigo manejo de propiedades
+'******************************************************************************************************
+
+Private Function Lista_Read() As String[]
+
+  Dim arsLista As New String[]
+  Dim iIndice As Integer
+  '------------------------recorre el listbox y carga en el array string
+  'los datos y luego los devuelve
+  For iIndice = 0 To ListBox1.Count - 1
+    arsLista.Add(ListBox1[iIndice].Text)
+  Next
+  
+  Return arsLista
+  
+End
+
+
+Private Function TextLabelSuperior_Read() As String
+
+  Return Label1.Caption  
+
+End
+
+Private Sub TextLabelSuperior_Write(Value As String)
+
+  Label1.Caption = Value
+
+End
+
+Private Function TextoInicialTBox_Read() As String
+
+  Return TBox1.Text  
+
+End
+
+Private Sub TextoInicialTBox_Write(Value As String)
+
+  TBox1.Text = Value
+
+End
+
+Private Function Count_Read() As Integer
+
+  Return ListBox1.Count
+
+End

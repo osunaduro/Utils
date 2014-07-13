@@ -1,0 +1,111 @@
+' Gambas class file
+
+Export
+
+Inherits VBox
+
+'******************************************************************************************************
+'Instancias Privadas
+'******************************************************************************************************
+Private $FArray As FArray
+
+'******************************************************************************************************
+'Constantes especiales para Controles
+'******************************************************************************************************
+Public Const _Group As String = "Osuna" ''para que se muestre en esta solapa de herramientas
+Public Const _DrawWith As String = "VBox" ''para que se dibuje como un textbox
+
+'******************************************************************************************************
+'Propiedades
+'******************************************************************************************************
+
+'' ## Descripcion ##
+'' 
+'' Texto que se muestra el el cuadro de texto antes de que 
+'' el usuario le de foco
+Property TextInfo As String
+Private sTextInfo As String
+
+'' ## Descripcion ##
+'' 
+'' Texto de la parte superior del control
+Property Caption As String
+Private sCaption As String
+
+'------------------------Propiedades que no aparecen en el ide
+
+'' ## Descripcion ##
+'' 
+'' Devuelve un array de texto con el total de los datos agregados
+Property Read Lista As String[]
+
+'' ## Descripcion ##
+'' 
+'' Cantidad de itemns.
+Property Read Count As Integer
+
+''y estas son las propiedades que deben mostrarse en el cuadro de dialogo 
+''de propiedades en el ide, el asterisco inicial indica que se deben de 
+''agregar a las ya existente por la herencia
+Public Const _Properties As String = "*,Caption,TextInfo,-Drop,-Font,-Ignore,-Indent,-Margin,-Padding,-PopupMenu,-Spacing,-AutoResize"
+
+'******************************************************************************************************
+'Codigo publico
+'******************************************************************************************************
+Public Sub _new()
+'------------------------Se mira 
+    Dim oChusma As Observer
+    oChusma = New Observer(Me) As "TArray" 
+
+    $FArray = New FArray(Me) As "FArray"
+        
+End Sub
+
+Public Sub FArray_Open()
+  
+  $FArray.h = Me.H
+  $FArray.W = Me.W
+  $FArray.TextLabelSuperior = sCaption
+  $FArray.TextoInicialTBox = sTextInfo
+  
+End
+
+'******************************************************************************************************
+'Codigo de las propiedades
+'******************************************************************************************************
+
+Private Function TextInfo_Read() As String
+
+  Return sTextInfo
+
+End
+
+Private Sub TextInfo_Write(Value As String)
+
+  sTextInfo = Value
+
+End
+
+Private Function Caption_Read() As String
+
+  Return sCaption  
+
+End
+
+Private Sub Caption_Write(Value As String)
+
+  sCaption = Value
+
+End
+
+Private Function Lista_Read() As String[]
+
+  Return $FArray.Lista
+
+End
+
+Private Function Count_Read() As Integer
+
+  Return $FArray.Count  
+
+End
