@@ -1,6 +1,0 @@
-' Gambas module file
-
-Public Const _Err As String = "#ERROR#"
-
-Public _TextColorInfo As Integer = Color.Lighter(Color.Black) ''color de texto claro
-Public _iBackground As Integer = Color.Default ''Color por defecto
